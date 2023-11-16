@@ -9,13 +9,11 @@ const Button = styled.button`
   height: 30px;
 `;
 
-const CountdownTimer = ({ initialSeconds, initialName }) => {
+const CountdownTimer = ({ initialSeconds, initialName, id, onDelete }) => {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [name, setName] = useState(initialName);
-  const [newName, setNewName] = useState(initialName);
   const [isActive, setIsActive] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [newSeconds, setNewSeconds] = useState(initialSeconds);
 
   useEffect(() => {
     let interval;
@@ -58,22 +56,22 @@ const CountdownTimer = ({ initialSeconds, initialName }) => {
 
   const handleSave = () => {
     setEditing(false);
-    setSeconds(newSeconds);
-    setName(newName);
+    setSeconds(seconds);
+    setName(name);
   };
 
   const progressWidth =
     Math.min((initialSeconds - seconds) / initialSeconds, 1) * 200;
 
   return (
-    <div className="flex items-center relative border w-fit">
+    <div id={id} className="flex items-center relative border w-fit">
       <div className="pr-2 w-52 text-center">
         {editing ? (
           <input
             className="w-52 bg-white border"
             type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             min="1"
           />
         ) : (
@@ -86,8 +84,8 @@ const CountdownTimer = ({ initialSeconds, initialName }) => {
             <input
               className="w-52 bg-white border"
               type="number"
-              value={newSeconds}
-              onChange={(e) => setNewSeconds(e.target.value)}
+              value={seconds}
+              onChange={(e) => setSeconds(e.target.value)}
               min="1"
             />
           ) : (
@@ -136,6 +134,14 @@ const CountdownTimer = ({ initialSeconds, initialName }) => {
             Edit
           </Button>
         )}
+        <Button
+          onClick={() => {
+            console.log("pressed");
+            onDelete(id);
+          }}
+        >
+          Delete
+        </Button>
       </div>
     </div>
   );
